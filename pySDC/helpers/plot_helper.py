@@ -1,5 +1,6 @@
 import matplotlib as mpl
 import matplotlib.pyplot as plt
+mpl.use('TkAgg')
 from distutils.spawn import find_executable
 
 default_mpl_params = mpl.rcParams.copy()
@@ -20,10 +21,10 @@ def setup_mpl(font_size=8, reset=False):
 
     # Set up plotting parameters
     style_options = {  # setup matplotlib to use latex for output
-        "font.family": "serif",
-        "font.serif": [],  # blank entries should cause plots to inherit fonts from the document
-        "font.sans-serif": [],
-        "font.monospace": [],
+        # "font.family": "serif",
+        # "font.serif": [],  # blank entries should cause plots to inherit fonts from the document
+        # "font.sans-serif": [],
+        # "font.monospace": [],
         # "axes.labelsize": 8,  # LaTeX default is 10pt font.
         "axes.linewidth": 0.5,
         "font.size": font_size,
@@ -46,7 +47,7 @@ def setup_mpl(font_size=8, reset=False):
 
     mpl.rcParams.update(style_options)
 
-    if find_executable('latex'):
+    if False: #find_executable('latex'):
 
         latex_support = {
             "pgf.texsystem": "pdflatex",  # change this if using xetex or lautex
@@ -70,11 +71,11 @@ def newfig(textwidth, scale, ratio=0.6180339887):
     return fig, ax
 
 
-def savefig(filename, save_pdf=True, save_pgf=True, save_png=True):
+def savefig(filename, save_pdf=False, save_pgf=False, save_png=True):
     if save_pgf and find_executable('latex'):
         plt.savefig('{}.pgf'.format(filename), bbox_inches='tight')
     if save_pdf:
         plt.savefig('{}.pdf'.format(filename), bbox_inches='tight')
     if save_png:
-        plt.savefig('{}.png'.format(filename), bbox_inches='tight')
+        plt.savefig('{}.png'.format(filename), dpi=2*mpl.rcParams["figure.dpi"])
     plt.close()
